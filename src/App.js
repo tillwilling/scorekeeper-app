@@ -1,23 +1,22 @@
 import { useState } from 'react'
-import Player from './Player'
-import Button from './Button'
-import PlayerForm from './PlayerForm'
+import './App.css'
+import Button from './components/Button'
+import Player from './components/Player'
+import PlayerForm from './components/PlayerForm'
 
 function App() {
-  const [players, setPlayers] = useState([
-    { name: 'John Doe', score: 20 },
-    { name: 'Jane Doe', score: 120 },
-  ])
+  const [players, setPlayers] = useState([])
 
   return (
     <div className="App">
       <PlayerForm onSubmit={createPlayer} />
+
       <ul className="App__player-list">
         {players.map((player, index) => (
           <li>
             <Player
               onMinus={() => updateScore(index, -1)}
-              onPlus={() => updateScore(index, +1)}
+              onPlus={() => updateScore(index, 1)}
               key={player.name}
               name={player.name}
               score={player.score}
@@ -43,7 +42,7 @@ function App() {
 
   function updateScore(index, value) {
     const playerToUpdate = players[index]
-    setPlayers([
+    setPlayers(players => [
       ...players.slice(0, index),
       { ...playerToUpdate, score: playerToUpdate.score + value },
       ...players.slice(index + 1),

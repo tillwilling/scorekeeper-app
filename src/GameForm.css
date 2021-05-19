@@ -1,0 +1,8 @@
+.GameForm label {
+  display: grid;
+  gap: 4px;
+}
+
+.GameForm input {
+  padding: 4px;
+}
