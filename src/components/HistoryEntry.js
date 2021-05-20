@@ -1,21 +1,21 @@
 import styled from 'styled-components/macro'
 import PropTypes from 'prop-types'
 
-History.propTypes = {
+HistoryEntry.propTypes = {
   nameOfGame: PropTypes.string,
   players: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string, score: PropTypes.number })
   ),
 }
-export default function History({ nameOfGame, players }) {
+export default function HistoryEntry({ nameOfGame, players }) {
   return (
     <Grid>
       <Title>{nameOfGame}</Title>
       <ul>
-        {players.map(players => (
-          <Player key={players.name}>
-            <span>{players.name}</span>
-            <span>{players.score}</span>
+        {players.map(player => (
+          <Player key={player.name}>
+            <span>{player.name}</span>
+            <span>{player.score}</span>
           </Player>
         ))}
       </ul>
@@ -29,7 +29,7 @@ const Grid = styled.section`
 `
 
 const Title = styled.h2`
-  font-size: 1.1.rem;
+  font-size: 1.1.em;
   margin: 0.2em 0;
 `
 
