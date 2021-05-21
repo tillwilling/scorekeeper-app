@@ -11,7 +11,7 @@ CreatePage.propTypes = {
 export default function CreatePage({ onSubmit, onNavigate }) {
   return (
     <Grid>
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <label>
           Name of game:
           <input name="name" type="text" placeholder="e.g. Carcasonne" />
@@ -21,7 +21,7 @@ export default function CreatePage({ onSubmit, onNavigate }) {
           <input name="players" type="text" placeholder="e.g. John, Jane" />
         </label>
         <Button>Create game</Button>
-      </form>
+      </Form>
       <Navigation
         currentPageId="create"
         onNavigate={onNavigate}

@@ -4,19 +4,19 @@ import Header from '../components/Header'
 import Player from '../components/Player'
 import Button from '../components/Button'
 
-GamePage.PropTypes = {
+GamePage.propTypes = {
   nameOfGame: PropTypes.string,
   players: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string, score: PropTypes.number })
   ),
-  onResetScore: PropTypes.func.isRequired,
+  onResetScores: PropTypes.func.isRequired,
   onEndGame: PropTypes.func.isRequired,
 }
 
 export default function GamePage({
   nameOfGame,
   players,
-  onResetScore,
+  onResetScores,
   onEndGame,
   onPlayerUpdate,
 }) {
