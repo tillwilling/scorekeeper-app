@@ -11,6 +11,7 @@ GamePage.propTypes = {
   ),
   onResetScores: PropTypes.func.isRequired,
   onEndGame: PropTypes.func.isRequired,
+  onPlayerUpdate: PropTypes.func.isRequired,
 }
 
 export default function GamePage({
@@ -40,6 +41,7 @@ export default function GamePage({
 
 const Grid = styled.section`
   display: grid;
+  align-content: flex-start;
   padding: 20px;
   gap: 20px;
 `

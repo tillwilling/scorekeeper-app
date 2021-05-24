@@ -30,9 +30,7 @@ const Wrapper = styled.section`
     gap: 10px;
     align-items: center;
   }
-  button:first-child {
-    background-color: hotpink;
-  }
+
   output {
     width: 3ch;
     text-align: right;
