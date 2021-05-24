@@ -4,12 +4,18 @@ import Navigation from './components/Navigation'
 import CreatePage from './pages/CreatePage'
 import GamePage from './pages/GamePage'
 import HistoryPage from './pages/HistoryPage'
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  useHistory,
+} from 'react-router-dom'
 
 export default function App() {
-  const [history, setHistory] = useState([])
+  const [matchHistory, setMatchHistory] = useState([])
   const [players, setPlayers] = useState([])
   const [nameOfGame, setNameOfGame] = useState('')
+  const history = useHistory()
 
   return (
     <Router>
@@ -20,7 +26,7 @@ export default function App() {
           </Route>
           <Route path="/game">
             <GamePage
-              onResetScore={resetScores}
+              onResetScores={resetScores}
               onEndGame={handleEndGame}
               onPlayerUpdate={updateScore}
               nameOfGame={nameOfGame}
@@ -28,14 +34,18 @@ export default function App() {
             />
           </Route>
           <Route path="/history">
-            <HistoryPage games={history} />
+            <HistoryPage games={matchHistory} />
           </Route>
         </Switch>
         <Route paths={['/', 'history']}>
           <Navigation
             pages={[
               { title: 'Create', id: '/' },
-              { title: 'History', id: 'history' },
+              {
+                title: 'History',
+                id: 'history',
+                disabled: !matchHistory.length,
+              },
             ]}
           />
         </Route>
@@ -44,12 +54,14 @@ export default function App() {
   )
 
   function handleEndGame() {
-    setHistory([{ players, nameOfGame }, ...history])
+    history.push('history')
+    setMatchHistory([{ players, nameOfGame }, ...setMatchHistory])
   }
 
   function handleSubmit({ players, nameOfGame }) {
     setPlayers(players)
     setNameOfGame(nameOfGame)
+    history.push('game')
   }
 
   function resetScores() {

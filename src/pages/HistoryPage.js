@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components/macro'
 import HistoryEntry from '../components/HistoryEntry'
+import { Redirect } from 'react-router-dom'
+import Header from '../components/Header'
 
 HistoryPage.propTypes = {
   games: PropTypes.arrayOf(
@@ -14,8 +16,11 @@ HistoryPage.propTypes = {
 }
 
 export default function HistoryPage({ games }) {
-  return (
+  return games.length === 0 ? (
+    <Redirect to="/" />
+  ) : (
     <Grid>
+      <Header>Match History</Header>
       <div>
         {games.map((game, index) => (
           <HistoryEntry
