@@ -7,7 +7,6 @@ import HistoryPage from './pages/HistoryPage'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 
 export default function App() {
-  const [currentPageId, setCurrentPageId] = useState('create')
   const [history, setHistory] = useState([])
   const [players, setPlayers] = useState([])
   const [nameOfGame, setNameOfGame] = useState('')
@@ -15,48 +14,42 @@ export default function App() {
   return (
     <Router>
       <AppGrid>
-        {currentPageId === 'create' && (
-          <CreatePage onNavigate={setCurrentPageId} onSubmit={handleSubmit} />
-        )}
-        {currentPageId === 'game' && (
-          <GamePage
-            onResetScore={resetScores}
-            onEndGame={handleEndGame}
-            onPlayerUpdate={updateScore}
-            nameOfGame={nameOfGame}
-            players={players}
-          />
-        )}
-        {currentPageId === 'history' && (
-          <HistoryPage games={history} onNavigate={setCurrentPageId} />
-        )}
-        {currentPageId !== 'game' && (
+        <Switch>
+          <Route exact path="/">
+            <CreatePage onSubmit={handleSubmit} />
+          </Route>
+          <Route path="/game">
+            <GamePage
+              onResetScore={resetScores}
+              onEndGame={handleEndGame}
+              onPlayerUpdate={updateScore}
+              nameOfGame={nameOfGame}
+              players={players}
+            />
+          </Route>
+          <Route path="/history">
+            <HistoryPage games={history} />
+          </Route>
+        </Switch>
+        <Route paths={['/', 'history']}>
           <Navigation
-            currentPageId={currentPageId}
-            onNavigate={setCurrentPageId}
             pages={[
-              { title: 'Create', id: 'create' },
+              { title: 'Create', id: '/' },
               { title: 'History', id: 'history' },
             ]}
           />
-        )}
+        </Route>
       </AppGrid>
-      <Switch>
-        <Route path="/GamePage" component={GamePage} />
-        <Route path="/" exact component={CreatePage} />
-      </Switch>
     </Router>
   )
 
   function handleEndGame() {
-    setCurrentPageId('history')
     setHistory([{ players, nameOfGame }, ...history])
   }
 
   function handleSubmit({ players, nameOfGame }) {
     setPlayers(players)
     setNameOfGame(nameOfGame)
-    setCurrentPageId('game')
   }
 
   function resetScores() {
