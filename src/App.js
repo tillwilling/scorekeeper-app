@@ -24,6 +24,7 @@ export default function App() {
           <Route exact path="/">
             <CreatePage onSubmit={handleSubmit} />
           </Route>
+
           <Route path="/game">
             <GamePage
               onResetScores={resetScores}
@@ -33,10 +34,12 @@ export default function App() {
               players={players}
             />
           </Route>
+
           <Route path="/history">
             <HistoryPage games={matchHistory} />
           </Route>
         </Switch>
+
         <Route paths={['/', 'history']}>
           <Navigation
             pages={[
