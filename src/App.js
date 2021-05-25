@@ -4,12 +4,7 @@ import Navigation from './components/Navigation'
 import CreatePage from './pages/CreatePage'
 import GamePage from './pages/GamePage'
 import HistoryPage from './pages/HistoryPage'
-import {
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  useHistory,
-} from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 
 export default function App() {
   const [matchHistory, setMatchHistory] = useState([])
@@ -18,42 +13,40 @@ export default function App() {
   const history = useHistory()
 
   return (
-    <Router>
-      <AppGrid>
-        <Switch>
-          <Route exact path="/">
-            <CreatePage onSubmit={handleSubmit} />
-          </Route>
+    <AppGrid>
+      <Switch>
+        <Route exact path="/">
+          <CreatePage onSubmit={handleSubmit} />
+        </Route>
 
-          <Route path="/game">
-            <GamePage
-              onResetScores={resetScores}
-              onEndGame={handleEndGame}
-              onPlayerUpdate={updateScore}
-              nameOfGame={nameOfGame}
-              players={players}
-            />
-          </Route>
-
-          <Route path="/history">
-            <HistoryPage games={matchHistory} />
-          </Route>
-        </Switch>
-
-        <Route paths={['/', 'history']}>
-          <Navigation
-            pages={[
-              { title: 'Create', id: '/' },
-              {
-                title: 'History',
-                id: 'history',
-                disabled: !matchHistory.length,
-              },
-            ]}
+        <Route path="/game">
+          <GamePage
+            onResetScores={resetScores}
+            onEndGame={handleEndGame}
+            onPlayerUpdate={updateScore}
+            nameOfGame={nameOfGame}
+            players={players}
           />
         </Route>
-      </AppGrid>
-    </Router>
+
+        <Route path="/history">
+          <HistoryPage games={matchHistory} />
+        </Route>
+      </Switch>
+
+      <Route paths={['/', 'history']}>
+        <Navigation
+          pages={[
+            { title: 'Create', id: '/' },
+            {
+              title: 'History',
+              id: 'history',
+              disabled: !matchHistory.length,
+            },
+          ]}
+        />
+      </Route>
+    </AppGrid>
   )
 
   function handleEndGame() {

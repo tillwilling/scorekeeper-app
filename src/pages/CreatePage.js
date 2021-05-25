@@ -21,7 +21,7 @@ export default function CreatePage({ onSubmit }) {
           name="players"
           placeholder="e.g. John, Jane"
         />
-        <Button onSubmit={handleSubmit}>Create game</Button>
+        <Button>Create game</Button>
       </Form>
     </Grid>
   )
