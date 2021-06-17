@@ -1,40 +1,63 @@
 import { useState } from 'react'
-import Player from './Player'
-import Button from './Button'
-import PlayerForm from './PlayerForm'
+import styled from 'styled-components/macro'
+import Navigation from './components/Navigation'
+import CreatePage from './pages/CreatePage'
+import GamePage from './pages/GamePage'
+import HistoryPage from './pages/HistoryPage'
+import { Route, Switch, useHistory } from 'react-router-dom'
 
-function App() {
-  const [players, setPlayers] = useState([
-    { name: 'John Doe', score: 20 },
-    { name: 'Jane Doe', score: 120 },
-  ])
+export default function App() {
+  const [matchHistory, setMatchHistory] = useState([])
+  const [players, setPlayers] = useState([])
+  const [nameOfGame, setNameOfGame] = useState('')
+  const history = useHistory()
 
   return (
-    <div className="App">
-      <PlayerForm onSubmit={createPlayer} />
-      <ul className="App__player-list">
-        {players.map((player, index) => (
-          <li>
-            <Player
-              onMinus={() => updateScore(index, -1)}
-              onPlus={() => updateScore(index, +1)}
-              key={player.name}
-              name={player.name}
-              score={player.score}
-            />
-          </li>
-        ))}
-      </ul>
+    <AppGrid>
+      <Switch>
+        <Route exact path="/">
+          <CreatePage onSubmit={handleSubmit} />
+        </Route>
 
-      <div className="App__buttons">
-        <Button onClick={resetScores}>Reset scores</Button>
-        <Button onClick={resetAll}>Reset all</Button>
-      </div>
-    </div>
+        <Route path="/game">
+          <GamePage
+            onResetScores={resetScores}
+            onEndGame={handleEndGame}
+            onPlayerUpdate={updateScore}
+            nameOfGame={nameOfGame}
+            players={players}
+          />
+        </Route>
+
+        <Route path="/history">
+          <HistoryPage games={matchHistory} />
+        </Route>
+      </Switch>
+
+      <Route paths={['/', 'history']}>
+        <Navigation
+          pages={[
+            { title: 'Create', id: '/' },
+            {
+              title: 'History',
+              id: 'history',
+              disabled: !matchHistory.length,
+            },
+          ]}
+        />
+      </Route>
+    </AppGrid>
   )
 
-  function resetAll() {
-    setPlayers([])
+  function handleEndGame() {
+    history.push('history')
+    setMatchHistory([{ players, nameOfGame }, ...setMatchHistory])
+  }
+
+  function handleSubmit({ players, nameOfGame }) {
+    setPlayers(players)
+    setNameOfGame(nameOfGame)
+    history.push('game')
   }
 
   function resetScores() {
@@ -43,16 +66,19 @@ function App() {
 
   function updateScore(index, value) {
     const playerToUpdate = players[index]
+
     setPlayers([
       ...players.slice(0, index),
       { ...playerToUpdate, score: playerToUpdate.score + value },
       ...players.slice(index + 1),
     ])
   }
-
-  function createPlayer(name) {
-    setPlayers([...players, { name, score: 0 }])
-  }
 }
 
-export default App
+const AppGrid = styled.div`
+  display: grid;
+  grid-template-rows: auto min-content;
+  height: 100vh;
+  padding: 12px;
+  gap: 20px;
+`
